@@ -1,0 +1,76 @@
+{
+  "info": {
+    "_postman_id": "28492ee0-8faa-4cfe-9cb1-bf2866a06b3f",
+    "name": "UrlShortener",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "6347230",
+    "_collection_link": "https://go.postman.co/collection/6347230-28492ee0-8faa-4cfe-9cb1-bf2866a06b3f?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "localhost:8080/api/employees/1/tax",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"originalUrl\": \"https://www.google.com\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/url/shorten",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "url",
+            "shorten"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "New Request",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/url/abc123",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "url",
+            "abc123"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
