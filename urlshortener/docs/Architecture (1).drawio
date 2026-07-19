@@ -1,0 +1,471 @@
+<mxfile host="app.diagrams.net" modified="2026-07-19T00:00:00.000Z" agent="Claude" version="21.0.0">
+
+  <!-- PAGE 1: System Architecture -->
+  <diagram id="page1" name="System Architecture">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Title -->
+        <mxCell id="title" value="Agentic URL Shortener — System Architecture" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="380" y="20" width="760" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Client -->
+        <mxCell id="client" value="&lt;b&gt;Client&lt;/b&gt;&lt;br&gt;Browser / API Consumer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="670" y="80" width="200" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ── CONTROLLER LAYER swimlane ── -->
+        <mxCell id="ctrl_box" value="Controller Layer" style="swimlane;fontSize=13;fontStyle=1;fillColor=#fffde7;strokeColor=#d6b656;fontColor=#333333;startSize=30;" vertex="1" parent="1">
+          <mxGeometry x="200" y="200" width="1140" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="url_ctrl" value="&lt;b&gt;UrlController&lt;/b&gt;&lt;br&gt;POST /api/v1/url/shorten&lt;br&gt;GET /{shortCode}&lt;br&gt;DELETE /{shortCode}" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="ctrl_box">
+          <mxGeometry x="20" y="35" width="240" height="55" as="geometry" />
+        </mxCell>
+
+        <mxCell id="analytics_ctrl" value="&lt;b&gt;AnalyticsController&lt;/b&gt;&lt;br&gt;GET /api/v1/url/analytics/{code}" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="ctrl_box">
+          <mxGeometry x="300" y="35" width="240" height="55" as="geometry" />
+        </mxCell>
+
+        <mxCell id="agent_ctrl" value="&lt;b&gt;AgentController&lt;/b&gt;&lt;br&gt;POST /api/v1/agent/run&lt;br&gt;POST /api/v1/agent/approve&lt;br&gt;GET /api/v1/agent/audit/{id}" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="ctrl_box">
+          <mxGeometry x="580" y="35" width="240" height="55" as="geometry" />
+        </mxCell>
+
+        <mxCell id="actuator_ctrl" value="&lt;b&gt;Actuator&lt;/b&gt;&lt;br&gt;/actuator/health&lt;br&gt;/actuator/metrics" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="ctrl_box">
+          <mxGeometry x="860" y="35" width="240" height="55" as="geometry" />
+        </mxCell>
+
+        <!-- ── SERVICE LAYER swimlane ── -->
+        <mxCell id="svc_box" value="Service Layer" style="swimlane;fontSize=13;fontStyle=1;fillColor=#f3f9f0;strokeColor=#82b366;fontColor=#333333;startSize=30;" vertex="1" parent="1">
+          <mxGeometry x="200" y="360" width="860" height="110" as="geometry" />
+        </mxCell>
+
+        <mxCell id="url_svc" value="&lt;b&gt;UrlServiceImpl&lt;/b&gt;&lt;br&gt;shorten(url)&lt;br&gt;redirect(code)&lt;br&gt;delete(code)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="svc_box">
+          <mxGeometry x="20" y="35" width="200" height="65" as="geometry" />
+        </mxCell>
+
+        <mxCell id="analytics_svc" value="&lt;b&gt;AnalyticsServiceImpl&lt;/b&gt;&lt;br&gt;recordClick(code, req) [async]&lt;br&gt;getAnalytics(code)&lt;br&gt;exportCsv(code)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="svc_box">
+          <mxGeometry x="240" y="35" width="200" height="65" as="geometry" />
+        </mxCell>
+
+        <mxCell id="audit_svc" value="&lt;b&gt;AuditServiceImpl&lt;/b&gt;&lt;br&gt;log(event, agentName,&lt;br&gt;input, output, decision)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="svc_box">
+          <mxGeometry x="460" y="35" width="200" height="65" as="geometry" />
+        </mxCell>
+
+        <mxCell id="metrics_svc" value="&lt;b&gt;MetricsService&lt;/b&gt;&lt;br&gt;trackLatency()&lt;br&gt;trackRetry()&lt;br&gt;trackSuccess()" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="svc_box">
+          <mxGeometry x="660" y="35" width="180" height="65" as="geometry" />
+        </mxCell>
+
+        <!-- ── INFRASTRUCTURE swimlane ── -->
+        <mxCell id="infra_box" value="Infrastructure" style="swimlane;fontSize=13;fontStyle=1;fillColor=#fce4ec;strokeColor=#b85450;fontColor=#333333;startSize=30;" vertex="1" parent="1">
+          <mxGeometry x="200" y="530" width="500" height="110" as="geometry" />
+        </mxCell>
+
+        <mxCell id="redis" value="&lt;b&gt;Redis Cache&lt;/b&gt;&lt;br&gt;Redirect fast path&lt;br&gt;(Optional — graceful fallback)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" vertex="1" parent="infra_box">
+          <mxGeometry x="20" y="35" width="210" height="65" as="geometry" />
+        </mxCell>
+
+        <mxCell id="h2db" value="&lt;b&gt;H2 Database&lt;/b&gt;&lt;br&gt;UrlMapping&lt;br&gt;ClickEvent | AuditEvent" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" vertex="1" parent="infra_box">
+          <mxGeometry x="260" y="35" width="210" height="65" as="geometry" />
+        </mxCell>
+
+        <!-- ── AGENTIC ORCHESTRATION swimlane ── -->
+        <mxCell id="agent_box" value="Agentic Orchestration Layer" style="swimlane;fontSize=13;fontStyle=1;fillColor=#f3e5f5;strokeColor=#9673a6;fontColor=#333333;startSize=30;" vertex="1" parent="1">
+          <mxGeometry x="780" y="360" width="560" height="280" as="geometry" />
+        </mxCell>
+
+        <mxCell id="orchestrator" value="&lt;b&gt;AgentOrchestrator&lt;/b&gt;&lt;br&gt;Workflow Engine + Dependency Graph&lt;br&gt;Retry Policy | Safe-Stop | Audit" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#9673a6;strokeColor=#7a4d91;fontColor=#ffffff;fontSize=11;fontStyle=1;" vertex="1" parent="agent_box">
+          <mxGeometry x="120" y="40" width="300" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="req_agent" value="RequirementAgent" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10;" vertex="1" parent="agent_box">
+          <mxGeometry x="10" y="120" width="150" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="plan_agent" value="TaskPlannerAgent" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10;" vertex="1" parent="agent_box">
+          <mxGeometry x="170" y="120" width="150" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="design_agent" value="DesignAgent" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10;" vertex="1" parent="agent_box">
+          <mxGeometry x="330" y="120" width="150" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="impact_agent" value="ImpactAnalysisAgent" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10;" vertex="1" parent="agent_box">
+          <mxGeometry x="490" y="120" width="60" height="36" as="geometry" />
+        </mxCell>
+
+        <mxCell id="code_agent" value="CodingAgent" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10;" vertex="1" parent="agent_box">
+          <mxGeometry x="10" y="168" width="120" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="test_agent" value="TestAgent" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10;" vertex="1" parent="agent_box">
+          <mxGeometry x="140" y="168" width="110" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="valid_agent" value="ValidationAgent" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10;" vertex="1" parent="agent_box">
+          <mxGeometry x="260" y="168" width="120" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="doc_agent" value="DocumentationAgent" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10;" vertex="1" parent="agent_box">
+          <mxGeometry x="390" y="168" width="80" height="36" as="geometry" />
+        </mxCell>
+
+        <mxCell id="rra_agent" value="&lt;b&gt;ReleaseReadinessAgent&lt;/b&gt;&lt;br&gt;⛔ Human Approval Gate" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=10;fontStyle=1;" vertex="1" parent="agent_box">
+          <mxGeometry x="10" y="216" width="200" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_agent" value="ReleaseAgent" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10;" vertex="1" parent="agent_box">
+          <mxGeometry x="220" y="216" width="130" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- ── EDGES ── -->
+
+        <!-- Client → Controllers (absolute coords) -->
+        <mxCell id="e_c_url" style="edgeStyle=orthogonalEdgeStyle;rounded=0;" edge="1" source="client" target="url_ctrl" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_c_ana" style="edgeStyle=orthogonalEdgeStyle;rounded=0;" edge="1" source="client" target="analytics_ctrl" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_c_agt" style="edgeStyle=orthogonalEdgeStyle;rounded=0;" edge="1" source="client" target="agent_ctrl" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Controllers → Services -->
+        <mxCell id="e_uc_us" style="edgeStyle=orthogonalEdgeStyle;rounded=0;" edge="1" source="url_ctrl" target="url_svc" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_ac_as" style="edgeStyle=orthogonalEdgeStyle;rounded=0;" edge="1" source="analytics_ctrl" target="analytics_svc" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_agc_orch" style="edgeStyle=orthogonalEdgeStyle;rounded=0;" edge="1" source="agent_ctrl" target="agent_box" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Services → Infrastructure -->
+        <mxCell id="e_us_redis" style="edgeStyle=orthogonalEdgeStyle;rounded=0;" edge="1" source="url_svc" target="redis" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_us_h2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;" edge="1" source="url_svc" target="h2db" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_as_h2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;" edge="1" source="analytics_svc" target="h2db" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_aud_h2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;" edge="1" source="audit_svc" target="h2db" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Services → Audit (dashed) -->
+        <mxCell id="e_us_aud" value="audit" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;fontSize=9;" edge="1" source="url_svc" target="audit_svc" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_as_aud" value="audit" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;fontSize=9;" edge="1" source="analytics_svc" target="audit_svc" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+
+  <!-- PAGE 2: Agent Workflow -->
+  <diagram id="page2" name="Agent Workflow">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="2200" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Title -->
+        <mxCell id="wf_title" value="Agent Workflow — SDLC Orchestration" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="175" y="20" width="500" height="36" as="geometry" />
+        </mxCell>
+
+        <!-- START -->
+        <mxCell id="w_start" value="Requirement Input" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="300" y="80" width="200" height="55" as="geometry" />
+        </mxCell>
+
+        <!-- RequirementAgent -->
+        <mxCell id="w_req" value="&lt;b&gt;RequirementAgent&lt;/b&gt;&lt;br&gt;Normalize · detect ambiguity&lt;br&gt;define APIs · define data model" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="275" y="170" width="250" height="65" as="geometry" />
+        </mxCell>
+
+        <!-- Ambiguous? diamond -->
+        <mxCell id="w_ambig" value="Ambiguous?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="300" y="270" width="200" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- Human Clarification Gate -->
+        <mxCell id="w_clarify" value="⛔ HUMAN CLARIFICATION&lt;br&gt;CHECKPOINT&lt;br&gt;Agent sends structured questions&lt;br&gt;Business approves refined requirement" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="570" y="255" width="230" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- TaskPlannerAgent -->
+        <mxCell id="w_plan" value="&lt;b&gt;TaskPlannerAgent&lt;/b&gt;&lt;br&gt;Build dependency graph&lt;br&gt;Assign agents · sequence tasks" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="275" y="380" width="250" height="65" as="geometry" />
+        </mxCell>
+
+        <!-- DesignAgent -->
+        <mxCell id="w_design" value="&lt;b&gt;DesignAgent&lt;/b&gt;&lt;br&gt;OpenAPI spec · DB schema&lt;br&gt;Architecture documentation" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="275" y="485" width="250" height="65" as="geometry" />
+        </mxCell>
+
+        <!-- ImpactAnalysisAgent (brownfield branch) -->
+        <mxCell id="w_impact" value="&lt;b&gt;ImpactAnalysisAgent&lt;/b&gt;&lt;br&gt;(Brownfield only)&lt;br&gt;Classify risk · propose migration" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="570" y="485" width="230" height="65" as="geometry" />
+        </mxCell>
+
+        <!-- CodingAgent -->
+        <mxCell id="w_code" value="&lt;b&gt;CodingAgent&lt;/b&gt;&lt;br&gt;Implement service · controller&lt;br&gt;repository · cache · async wiring" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="275" y="590" width="250" height="65" as="geometry" />
+        </mxCell>
+
+        <!-- Parallel: TestAgent + ValidationAgent -->
+        <mxCell id="w_test" value="&lt;b&gt;TestAgent&lt;/b&gt;&lt;br&gt;Unit tests · Integration tests&lt;br&gt;JaCoCo coverage report" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="130" y="700" width="220" height="65" as="geometry" />
+        </mxCell>
+
+        <mxCell id="w_valid" value="&lt;b&gt;ValidationAgent&lt;/b&gt;&lt;br&gt;Security scan · Input validation&lt;br&gt;Performance check (p99 &lt; 200ms)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="450" y="700" width="220" height="65" as="geometry" />
+        </mxCell>
+
+        <mxCell id="w_parallel_label" value="← parallel execution →" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=10;fontStyle=2;fontColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="200" y="680" width="400" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- DocumentationAgent -->
+        <mxCell id="w_doc" value="&lt;b&gt;DocumentationAgent&lt;/b&gt;&lt;br&gt;README · API docs · Architecture&lt;br&gt;summary · Engineering summary" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="275" y="810" width="250" height="65" as="geometry" />
+        </mxCell>
+
+        <!-- ReleaseReadinessAgent -->
+        <mxCell id="w_rra" value="&lt;b&gt;ReleaseReadinessAgent&lt;/b&gt;&lt;br&gt;Verify all gates passed&lt;br&gt;Coverage ≥ 80% · no critical security findings&lt;br&gt;Produce readiness report" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="275" y="915" width="250" height="75" as="geometry" />
+        </mxCell>
+
+        <!-- Human Approval Gate -->
+        <mxCell id="w_human" value="⛔ HUMAN APPROVAL CHECKPOINT&lt;br&gt;Reviewer reads readiness report&lt;br&gt;POST /api/v1/agent/approve/{id}&lt;br&gt;Approver name + sign-off comment required" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="265" y="1030" width="270" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Gates Check diamond -->
+        <mxCell id="w_gates_ok" value="All gates&lt;br&gt;passed?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="310" y="1148" width="180" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- ReleaseAgent -->
+        <mxCell id="w_rel" value="&lt;b&gt;ReleaseAgent&lt;/b&gt;&lt;br&gt;Tag release · Update changelog&lt;br&gt;Deploy · Smoke test" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="275" y="1260" width="250" height="65" as="geometry" />
+        </mxCell>
+
+        <!-- DONE -->
+        <mxCell id="w_done" value="✅ Release Complete" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="290" y="1370" width="220" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Safe Stop (failure path) -->
+        <mxCell id="w_safestop" value="⛑ Safe-Stop State&lt;br&gt;Preserve outputs&lt;br&gt;Alert operator&lt;br&gt;Rollback if brownfield" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="590" y="1148" width="180" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- ── WORKFLOW EDGES ── -->
+
+        <mxCell id="we1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;" edge="1" source="w_start" target="w_req" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="we2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;" edge="1" source="w_req" target="w_ambig" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="we3" value="Yes — block" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=10;" edge="1" source="w_ambig" target="w_clarify" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="we3b" value="Approved" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=10;exitX=0.5;exitY=1;" edge="1" source="w_clarify" target="w_plan" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="685" y="370" />
+              <mxPoint x="400" y="370" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="we4" value="No — clear" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=10;" edge="1" source="w_ambig" target="w_plan" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="we5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;" edge="1" source="w_plan" target="w_design" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="we5b" value="Brownfield" style="edgeStyle=orthogonalEdgeStyle;dashed=1;rounded=0;fontSize=10;" edge="1" source="w_plan" target="w_impact" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="we6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;" edge="1" source="w_design" target="w_code" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="we6b" style="edgeStyle=orthogonalEdgeStyle;dashed=1;rounded=0;" edge="1" source="w_impact" target="w_code" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="we7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;" edge="1" source="w_code" target="w_test" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="we8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;" edge="1" source="w_code" target="w_valid" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="we9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;" edge="1" source="w_test" target="w_doc" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="we10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;" edge="1" source="w_valid" target="w_doc" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="we11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;" edge="1" source="w_doc" target="w_rra" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="we12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;" edge="1" source="w_rra" target="w_human" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="we13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;" edge="1" source="w_human" target="w_gates_ok" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="we14" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=10;" edge="1" source="w_gates_ok" target="w_rel" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="we14b" value="No — failure" style="edgeStyle=orthogonalEdgeStyle;rounded=0;fontSize=10;" edge="1" source="w_gates_ok" target="w_safestop" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="we15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;" edge="1" source="w_rel" target="w_done" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Rejected → rework loop -->
+        <mxCell id="we16" value="Rejected — rework" style="edgeStyle=orthogonalEdgeStyle;dashed=1;rounded=0;fontSize=10;exitX=1;exitY=0.5;entryX=1;entryY=0.5;strokeColor=#d79b00;" edge="1" source="w_human" target="w_code" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="760" y="1070" />
+              <mxPoint x="760" y="623" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+
+  <!-- PAGE 3: Data Model -->
+  <diagram id="page3" name="Data Model">
+    <mxGraphModel dx="1000" dy="600" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="dm_title" value="Data Model — Entities" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="300" y="20" width="500" height="36" as="geometry" />
+        </mxCell>
+
+        <!-- UrlMapping entity -->
+        <mxCell id="url_entity" value="&lt;b&gt;UrlMapping&lt;/b&gt;" style="swimlane;fontStyle=1;align=center;startSize=26;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="100" y="100" width="280" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="url_id" value="🔑 id : Long (PK, auto)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;" vertex="1" parent="url_entity">
+          <mxGeometry x="10" y="30" width="260" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="url_orig" value="originalUrl : String (NOT NULL)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;" vertex="1" parent="url_entity">
+          <mxGeometry x="10" y="52" width="260" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="url_code" value="🔑 shortCode : String (UNIQUE)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;" vertex="1" parent="url_entity">
+          <mxGeometry x="10" y="74" width="260" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="url_created" value="createdAt : LocalDateTime" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;" vertex="1" parent="url_entity">
+          <mxGeometry x="10" y="96" width="260" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="url_expires" value="expiresAt : LocalDateTime (nullable)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;" vertex="1" parent="url_entity">
+          <mxGeometry x="10" y="118" width="260" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="url_count" value="clickCount : Long (default 0)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;" vertex="1" parent="url_entity">
+          <mxGeometry x="10" y="140" width="260" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="url_by" value="createdBy : String (nullable)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;" vertex="1" parent="url_entity">
+          <mxGeometry x="10" y="162" width="260" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="url_active" value="active : Boolean (default true)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;" vertex="1" parent="url_entity">
+          <mxGeometry x="10" y="184" width="260" height="22" as="geometry" />
+        </mxCell>
+
+        <!-- ClickEvent entity -->
+        <mxCell id="click_entity" value="&lt;b&gt;ClickEvent&lt;/b&gt;" style="swimlane;fontStyle=1;align=center;startSize=26;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="450" y="100" width="280" height="210" as="geometry" />
+        </mxCell>
+        <mxCell id="click_id" value="🔑 id : Long (PK, auto)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;" vertex="1" parent="click_entity">
+          <mxGeometry x="10" y="30" width="260" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="click_code" value="shortCode : String (FK → UrlMapping)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;" vertex="1" parent="click_entity">
+          <mxGeometry x="10" y="52" width="260" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="click_at" value="clickedAt : LocalDateTime" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;" vertex="1" parent="click_entity">
+          <mxGeometry x="10" y="74" width="260" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="click_ip" value="ipAddress : String" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;" vertex="1" parent="click_entity">
+          <mxGeometry x="10" y="96" width="260" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="click_ua" value="userAgent : String" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;" vertex="1" parent="click_entity">
+          <mxGeometry x="10" y="118" width="260" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="click_ref" value="referrer : String (nullable)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;" vertex="1" parent="click_entity">
+          <mxGeometry x="10" y="140" width="260" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="click_country" value="country : String (nullable)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;" vertex="1" parent="click_entity">
+          <mxGeometry x="10" y="162" width="260" height="22" as="geometry" />
+        </mxCell>
+
+        <!-- AuditEvent entity -->
+        <mxCell id="audit_entity" value="&lt;b&gt;AuditEvent&lt;/b&gt;" style="swimlane;fontStyle=1;align=center;startSize=26;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="800" y="100" width="260" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="aud_id" value="🔑 id : Long (PK, auto)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;" vertex="1" parent="audit_entity">
+          <mxGeometry x="10" y="30" width="240" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="aud_wf" value="workflowId : String" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;" vertex="1" parent="audit_entity">
+          <mxGeometry x="10" y="52" width="240" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="aud_agent" value="agentName : String" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;" vertex="1" parent="audit_entity">
+          <mxGeometry x="10" y="74" width="240" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="aud_action" value="action : String" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;" vertex="1" parent="audit_entity">
+          <mxGeometry x="10" y="96" width="240" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="aud_input" value="input : Text" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;" vertex="1" parent="audit_entity">
+          <mxGeometry x="10" y="118" width="240" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="aud_output" value="output : Text" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;" vertex="1" parent="audit_entity">
+          <mxGeometry x="10" y="140" width="240" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="aud_decision" value="decision : String" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;" vertex="1" parent="audit_entity">
+          <mxGeometry x="10" y="162" width="240" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="aud_ts" value="timestamp : LocalDateTime" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;" vertex="1" parent="audit_entity">
+          <mxGeometry x="10" y="184" width="240" height="22" as="geometry" />
+        </mxCell>
+
+        <!-- ER Relationship -->
+        <mxCell id="er_rel" value="1" style="edgeStyle=entityRelationEdgeStyle;endArrow=ERmanyToOne;startArrow=ERmandOne;exitX=1;exitY=0.5;entryX=0;entryY=0.5;fontSize=12;fontStyle=1;" edge="1" source="url_entity" target="click_entity" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="er_rel_label" value="1 : many" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="385" y="190" width="60" height="22" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+
+</mxfile>
