@@ -1,0 +1,6 @@
+package com.schwab.urlshortener.workflow;
+
+public enum WorkflowStage {
+	REQUIREMENT, TASK_PLANNING, IMPACT_ANALYSIS, DESIGN, DOCUMENTATION, CODING, TESTING, VALIDATION, APPROVAL, RELEASE,
+	COMPLETED, FAILED
+}
